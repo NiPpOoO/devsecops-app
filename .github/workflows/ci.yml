@@ -38,7 +38,11 @@ jobs:
       - uses: docker/build-push-action@v6
         with:
           context: .
-          tags: nippoooz/devsecops-app:${{ github.sha }}
+          tags: |
+            nippoooz/devsecops-app:${{ github.sha }}
+            nippoooz/devsecops-app:main
+            nippoooz/devsecops-app:latest
+
           push: true
   trivy-scan:
     runs-on: ubuntu-latest

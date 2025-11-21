@@ -1,13 +1,22 @@
 FROM python:3.11-slim
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+
+# рабочая директория
 WORKDIR /app
+
+# зависимости
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+
+# код приложения
 COPY app.py .
+
+# создаём пользователя без root
 RUN useradd -u 1001 -m appuser
 USER appuser
+
+# открываем порт
 EXPOSE 5000
-ENTRYPOINT ["python"]
-CMD ["app.py"]
+
+# запускаем gunicorn
+CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:5000"]
 
